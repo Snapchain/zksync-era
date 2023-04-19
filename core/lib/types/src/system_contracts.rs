@@ -75,19 +75,19 @@ static SYSTEM_CONTRACTS: Lazy<Vec<DeployedContract>> = Lazy::new(|| {
             "precompiles/",
             "Keccak256",
             KECCAK256_PRECOMPILE_ADDRESS,
-            ContractLanguage::Yul,
+            ContractLanguage::Sol,
         ),
         (
             "precompiles/",
             "SHA256",
             SHA256_PRECOMPILE_ADDRESS,
-            ContractLanguage::Yul,
+            ContractLanguage::Sol,
         ),
         (
             "precompiles/",
             "Ecrecover",
             ECRECOVER_PRECOMPILE_ADDRESS,
-            ContractLanguage::Yul,
+            ContractLanguage::Sol,
         ),
         (
             "",
@@ -99,7 +99,7 @@ static SYSTEM_CONTRACTS: Lazy<Vec<DeployedContract>> = Lazy::new(|| {
             "",
             "EventWriter",
             EVENT_WRITER_ADDRESS,
-            ContractLanguage::Yul,
+            ContractLanguage::Sol,
         ),
         (
             "",
@@ -107,12 +107,12 @@ static SYSTEM_CONTRACTS: Lazy<Vec<DeployedContract>> = Lazy::new(|| {
             BOOTLOADER_UTILITIES_ADDRESS,
             ContractLanguage::Sol,
         ),
-        (
-            "",
-            "BytecodeCompressor",
-            BYTECODE_COMPRESSOR_ADDRESS,
-            ContractLanguage::Sol,
-        ),
+        // (
+        //     "",
+        //     "BytecodeCompressor",
+        //     BYTECODE_COMPRESSOR_ADDRESS,
+        //     ContractLanguage::Sol,
+        // ),
     ]
     .map(|(path, name, address, contract_lang)| DeployedContract {
         account_id: AccountTreeId::new(address),
