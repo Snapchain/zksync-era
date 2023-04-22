@@ -12,8 +12,16 @@ export async function compileSystemContracts() {
     process.chdir('etc/system-contracts');
     await utils.spawn('yarn');
     await utils.spawn('yarn hardhat compile');
+
+    // build bootloader files (etc/system-contracts/scripts/process.ts) using
+    //  the etc/system-contracts/bootloader/bootloader.yul template. output in
+    //  folder bootloader/build
     await utils.spawn('yarn preprocess');
+
+    // compile .yul files in etc/system-contracts/bootloader to .zbin files
+    //   usinig https://github.com/matter-labs/zksolc-bin
     await utils.spawn('yarn hardhat run ./scripts/compile-yul.ts');
+
     process.chdir('../..');
 }
 

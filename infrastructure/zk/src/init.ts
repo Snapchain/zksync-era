@@ -18,7 +18,10 @@ const announce = chalk.yellow;
 const success = chalk.green;
 const timestamp = chalk.grey;
 
-export async function init(skipSubmodulesCheckout: boolean) {
+export async function init(skipSubmodulesCheckout: boolean = false) {
+    // TODO(zidong): this is for `matterlabs/geth:latest` in the default compose
+    //  file but some steps might not be necessary if we use a different DA 
+    //  layer
     await announced('Creating docker volumes', createVolumes());
     if (!process.env.CI) {
         await announced('Pulling images', docker.pull());
@@ -26,19 +29,36 @@ export async function init(skipSubmodulesCheckout: boolean) {
         await announced('Checking git hooks', env.gitHooks());
         await announced('Setting up containers', up());
     }
+
     if (!skipSubmodulesCheckout) {
+        // TODO(zidong): this runs `git submodule update` but there's a bug that
+        //    the default branch is not main / master. So it won't really update
+        //    for a few repos. use `git submodule status` to check it out.
         await announced('Checkout system-contracts submodule', submoduleUpdate());
     }
+
+    // this builds zksync-sdk-web3, reading-tool from the top-level package.json
     await announced('Compiling JS packages', run.yarn());
+
+    // system contracts
     await announced('Compile l2 contracts', compiler.compileAll());
+
     await announced('Drop postgres db', db.drop());
     await announced('Setup postgres db', db.setup());
     await announced('Clean rocksdb', clean('db'));
     await announced('Clean backups', clean('backups'));
     await announced('Checking PLONK setup', run.plonkSetup());
+
+    // build the L1 contracts
     await announced('Building contracts', contract.build());
+
+    // deploy the ERC20 token to L1
+    //   TODO(zidong): change ETH_CLIENT_WEB3_URL in contracts/ethereum/.env
     await announced('Deploying localhost ERC20 tokens', run.deployERC20('dev'));
+
+    // runs core/bin/zksync_core/src/bin/zksync_server.rs
     await announced('Running server genesis setup', server.genesisFromSources());
+
     await announced('Deploying L1 contracts', contract.redeployL1([]));
     await announced('Initializing validator', contract.initializeValidator());
     await announced('Initialize L1 allow list', contract.initializeL1AllowList());
@@ -112,6 +132,8 @@ async function checkEnv() {
         throw new Error('Error, node.js version 14.14.0 or higher is required');
     }
 }
+
+// the actual developer-facing commands
 
 export const initCommand = new Command('init')
     .option('--skip-submodules-checkout')

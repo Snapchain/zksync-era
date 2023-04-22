@@ -87,6 +87,7 @@ pub async fn wait_for_tasks(task_futures: Vec<JoinHandle<()>>, tasks_allowed_to_
 }
 
 /// Inserts the initial information about zkSync tokens into the database.
+///   default: DATABASE_URL=postgres://postgres@localhost/zksync_local
 pub async fn genesis_init(config: ZkSyncConfig) {
     let mut storage = StorageProcessor::establish_connection(true).await;
     genesis::ensure_genesis_state(&mut storage, &config).await;
