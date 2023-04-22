@@ -20,7 +20,7 @@ const timestamp = chalk.grey;
 
 export async function init(skipSubmodulesCheckout: boolean = false) {
     // TODO(zidong): this is for `matterlabs/geth:latest` in the default compose
-    //  file but some steps might not be necessary if we use a different DA 
+    //  file but some steps might not be necessary if we use a different DA
     //  layer
     await announced('Creating docker volumes', createVolumes());
     if (!process.env.CI) {

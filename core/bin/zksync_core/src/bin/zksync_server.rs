@@ -3,8 +3,12 @@ use std::cell::RefCell;
 use futures::{channel::mpsc, executor::block_on, SinkExt, StreamExt};
 use structopt::StructOpt;
 
+/// core/lib/config/src/lib.rs
 use zksync_config::ZkSyncConfig;
+
+/// core/bin/zksync_core/src/lib.rs
 use zksync_core::{genesis_init, initialize_components, wait_for_tasks, Component, Components};
+
 use zksync_storage::RocksDB;
 
 #[derive(Debug, Clone, Copy)]
@@ -82,6 +86,7 @@ async fn main() -> anyhow::Result<()> {
         config.chain.state_keeper.block_commit_deadline_ms = 1;
     }
 
+    // store data in DATABASE_URL
     genesis_init(config.clone()).await;
 
     // OneShotWitnessGenerator is the only component that is not expected to run indefinitely
