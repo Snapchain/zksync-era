@@ -33,6 +33,7 @@ function updateContractsEnv(deployLog: String, envVars: Array<string>) {
     return updatedContracts;
 }
 
+// TODO(zidong): there is no initialize-validator command. this code will always fail
 export async function initializeValidator(args: any[] = []) {
     await utils.confirmAction();
 
@@ -131,7 +132,8 @@ command
     .action(redeployL1);
 command.command('deploy [deploy-opts...]').allowUnknownOption(true).description('deploy contracts').action(deployL1);
 command.command('build').description('build contracts').action(build);
-command.command('initilize-validator').description('initialize validator').action(initializeValidator);
+// TODO(zidong): this will always silently fail
+// command.command('initilize-validator').description('initialize validator').action(initializeValidator);
 command
     .command('initilize-l1-allow-list-contract')
     .description('initialize L1 allow list contract')

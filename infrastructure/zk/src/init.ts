@@ -61,7 +61,10 @@ export async function init(skipSubmodulesCheckout: boolean = false) {
     await announced('Running server genesis setup', server.genesisFromSources());
 
     await announced('Deploying L1 contracts', contract.redeployL1([]));
-    await announced('Initializing validator', contract.initializeValidator());
+
+    // TODO(zidong): this will always silently fail
+    // await announced('Initializing validator', contract.initializeValidator());
+
     await announced('Initialize L1 allow list', contract.initializeL1AllowList());
     await announced('Deploying L2 contracts', contract.deployL2());
 }
@@ -79,7 +82,8 @@ export async function reinit() {
     await announced('Building contracts', contract.build());
     await announced('Running server genesis setup', server.genesisFromSources());
     await announced('Deploying L1 contracts', contract.redeployL1([]));
-    await announced('Initializing validator', contract.initializeValidator());
+    // TODO(zidong): this will always silently fail
+    // await announced('Initializing validator', contract.initializeValidator());
     await announced('Initializing L1 Allow list', contract.initializeL1AllowList());
     await announced('Deploying L2 contracts', contract.deployL2());
 }
@@ -90,7 +94,8 @@ export async function lightweightInit() {
     await announced('Clean backups', clean('backups'));
     await announced('Running server genesis setup', server.genesisFromBinary());
     await announced('Deploying L1 contracts', contract.redeployL1([]));
-    await announced('Initializing validator', contract.initializeValidator());
+    // TODO(zidong): this will always silently fail
+    // await announced('Initializing validator', contract.initializeValidator());
     await announced('Initializing L1 Allow list', contract.initializeL1AllowList());
     await announced('Deploying L2 contracts', contract.deployL2());
 }
