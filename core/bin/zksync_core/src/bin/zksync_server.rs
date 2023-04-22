@@ -17,6 +17,7 @@ pub enum ServerCommand {
     Launch,
 }
 
+/// Maps to the command line options. see `zk server -h` for details
 #[derive(StructOpt)]
 #[structopt(name = "zkSync operator node", author = "Matter Labs")]
 struct Opt {
@@ -60,6 +61,8 @@ async fn main() -> anyhow::Result<()> {
     let mut config = ZkSyncConfig::from_env();
     let sentry_guard = vlog::init();
 
+    // when --genesis option is passed in, it will generate genesis data to be
+    // stored in the PSQL database and return.
     if opt.genesis {
         genesis_init(config).await;
         return Ok(());

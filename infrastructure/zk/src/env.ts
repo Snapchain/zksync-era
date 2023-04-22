@@ -7,8 +7,10 @@ import * as config from './config';
 export function get(print: boolean = false) {
     const current = `etc/env/.current`;
     const inCurrent = fs.existsSync(current) && fs.readFileSync(current).toString().trim();
-    const currentEnv = (process.env.ZKSYNC_ENV =
-        process.env.ZKSYNC_ENV || inCurrent || (process.env.IN_DOCKER ? 'docker' : 'dev'));
+    if (!process.env.ZKSYNC_ENV) {
+        process.env.ZKSYNC_ENV = inCurrent || (process.env.IN_DOCKER ? 'docker' : 'dev');
+    }
+    const currentEnv = process.env.ZKSYNC_ENV;
 
     if (print) {
         const envs = new Set(['dev', currentEnv]);

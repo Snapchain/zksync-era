@@ -56,6 +56,8 @@ export function background(command: string, stdio: any = 'inherit') {
     return _spawn(command, { stdio: stdio, shell: true, detached: true });
 }
 
+// ask the user to confirm the action by typing the ZKSYNC_ENV name before proceeding. it will be skipped if using
+//   etc/env/dev.env as it contians `ZKSYNC_ACTION=dont_ask`
 export async function confirmAction() {
     if (process.env.ZKSYNC_ACTION == 'dont_ask') return;
     const rl = readline.createInterface({

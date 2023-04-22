@@ -40,7 +40,7 @@ export async function init(skipSubmodulesCheckout: boolean = false) {
     // this builds zksync-sdk-web3, reading-tool from the top-level package.json
     await announced('Compiling JS packages', run.yarn());
 
-    // system contracts
+    // compile system contracts (L2)
     await announced('Compile l2 contracts', compiler.compileAll());
 
     await announced('Drop postgres db', db.drop());
@@ -56,7 +56,8 @@ export async function init(skipSubmodulesCheckout: boolean = false) {
     //   TODO(zidong): change ETH_CLIENT_WEB3_URL in contracts/ethereum/.env
     await announced('Deploying localhost ERC20 tokens', run.deployERC20('dev'));
 
-    // runs core/bin/zksync_core/src/bin/zksync_server.rs
+    // runs `zk server --genesis`. generates L2 genesis data and store in PSQL.
+    //   see "core/bin/zksync_core/src/bin/zksync_server.rs"
     await announced('Running server genesis setup', server.genesisFromSources());
 
     await announced('Deploying L1 contracts', contract.redeployL1([]));

@@ -10,6 +10,7 @@ export async function build() {
 export async function verifyL1Contracts() {
     // Spawning a new script is expensive, so if we know that publishing is disabled, it's better to not launch
     // it at all (even though `verify` checks the network as well).
+    // So if we use non-localhost L1, this step won't be skipped
     if (process.env.CHAIN_ETH_NETWORK == 'localhost') {
         console.log('Skip contract verification on localhost');
         return;
@@ -87,7 +88,7 @@ export async function deployL2(args: any[] = []) {
 export async function deployL1(args: any[]) {
     await utils.confirmAction();
 
-    // In the localhost setup scenario we don't have the workspace,
+    // In the localhost setup scenario (only defined in docker/local-node/Dockerfile) we don't have the workspace,
     // so we have to `--cwd` into the required directory.
     const baseCommand = process.env.ZKSYNC_LOCAL_SETUP ? `yarn --cwd /contracts/ethereum` : `yarn l1-contracts`;
 
