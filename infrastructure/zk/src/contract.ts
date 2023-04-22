@@ -63,6 +63,7 @@ export async function deployL2(args: any[] = []) {
     const baseCommandL1 = isLocalSetup ? `yarn --cwd /contracts/ethereum` : `yarn l1-contracts`;
 
     // Skip compilation for local setup, since we already copied artifacts into the container.
+    // This is another reason why we need to set ZKSYNC_LOCAL_SETUP
     await utils.spawn(`${baseCommandL2} build`);
     await utils.spawn(`${baseCommandL2} compile-and-deploy-libs ${args.join(' ')}`);
 
@@ -89,7 +90,7 @@ export async function deployL2(args: any[] = []) {
 export async function deployL1(args: any[]) {
     await utils.confirmAction();
 
-    // In the localhost setup scenario (only defined in docker/local-node/Dockerfile) we don't have the workspace,
+    // In the localhost setup scenario (only set in docker/local-node/Dockerfile) we don't have the workspace,
     // so we have to `--cwd` into the required directory.
     const baseCommand = process.env.ZKSYNC_LOCAL_SETUP ? `yarn --cwd /contracts/ethereum` : `yarn l1-contracts`;
 

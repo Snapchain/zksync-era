@@ -398,6 +398,8 @@ pub async fn initialize_components(
     }
 
     // We don't want witness generator to run on local nodes, as it's CPU heavy and is not stable yet
+    // TODO(zidong): ZKSYNC_LOCAL_SETUP is only set in docker/local-node/Dockerfile. we should make sure to set it up
+    // using a docker continaner or create another .env file and point it in etc/env/.current
     let is_local_setup = std::env::var("ZKSYNC_LOCAL_SETUP") == Ok("true".to_owned());
     if let Some(Component::WitnessGenerator(batch_size)) = components
         .iter()

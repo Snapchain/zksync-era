@@ -53,19 +53,28 @@ export async function init(skipSubmodulesCheckout: boolean = false) {
     await announced('Building contracts', contract.build());
 
     // deploy the ERC20 token to L1
-    //   TODO(zidong): change ETH_CLIENT_WEB3_URL in contracts/ethereum/.env
+    // TODO(zidong):
+    //   - change ETH_CLIENT_WEB3_URL in contracts / ethereum /.env
+    //   - 'dev' will deploy a few common ERC20 tokens. should change it to 'new' and specify the token we need
+    //   - maybe just comment it out to avoid deploying any token at all since it's using `ethTestConfig.mnemonic`
     await announced('Deploying localhost ERC20 tokens', run.deployERC20('dev'));
 
     // runs `zk server --genesis`. generates L2 genesis data and store in PSQL.
     //   see "core/bin/zksync_core/src/bin/zksync_server.rs"
     await announced('Running server genesis setup', server.genesisFromSources());
 
+    // TODO(zidong): for many of the following steps, we need to either set
+    // process.env.MNEMONIC or pass in arguments for --private - key
+
     await announced('Deploying L1 contracts', contract.redeployL1([]));
 
     // TODO(zidong): this will always silently fail
     // await announced('Initializing validator', contract.initializeValidator());
 
+    // maps to IAllowList.sol
+    // this calls contracts/ethereum/scripts/initialize-l1-allow-list.ts
     await announced('Initialize L1 allow list', contract.initializeL1AllowList());
+
     await announced('Deploying L2 contracts', contract.deployL2());
 }
 
