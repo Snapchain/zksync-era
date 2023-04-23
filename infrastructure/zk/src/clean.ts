@@ -15,7 +15,7 @@ export function clean(path: string) {
 
 export const command = new Command('clean')
     .option('--config [environment]')
-    .option('--database')
+    .option('--database') // this is only for the RocksDB
     .option('--backups')
     .option('--contracts')
     .option('--artifacts')

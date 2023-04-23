@@ -57,7 +57,7 @@ export async function init(skipSubmodulesCheckout: boolean = false) {
     //   - change ETH_CLIENT_WEB3_URL in contracts / ethereum /.env
     //   - 'dev' will deploy a few common ERC20 tokens. should change it to 'new' and specify the token we need
     //   - maybe just comment it out to avoid deploying any token at all since it's using `ethTestConfig.mnemonic`
-    await announced('Deploying localhost ERC20 tokens', run.deployERC20('dev'));
+    // await announced('Deploying localhost ERC20 tokens', run.deployERC20('dev'));
 
     // runs `zk server --genesis`. generates L2 genesis data and store in PSQL.
     //   see "core/bin/zksync_core/src/bin/zksync_server.rs"
